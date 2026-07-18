@@ -1,16 +1,34 @@
+<div align="center">
+
 # AI Concept Map
 
-An interactive map of the 80 concepts you need to actually understand how modern large language models work — from byte-pair encoding to mesa-optimization — laid out as a graph of prerequisites rather than a flat glossary.
+**The 80 concepts you need to actually understand how modern LLMs work — laid out as a graph of prerequisites, not a flat glossary.**
 
-One HTML file. No build, no dependencies, no server.
+![Dependencies](https://img.shields.io/badge/dependencies-none-0a0a0f)
+![Build](https://img.shields.io/badge/build-none-0a0a0f)
+![One file](https://img.shields.io/badge/ships%20as-one%20HTML%20file-0a0a0f)
 
-## Why
+</div>
 
-Most AI explainers are either a glossary (definitions with no structure) or a course (structure you can't skim). Neither tells you *what you have to understand first*.
+![The map: zooming into the graph, opening a concept, filtering to one thread](docs/screenshots/demo.gif)
 
-This is a dependency graph. Every concept links to the ones underneath it, grouped into 11 tiers where each tier assumes the one above. You can read it top to bottom as a curriculum, or drop into any node and walk backwards until you hit something you already know.
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/map-overview.png" alt="Force-directed graph of 80 concepts in nine labelled clusters"><br><em>The whole field at once — 80 concepts, nine clusters</em></td>
+<td width="50%"><img src="docs/screenshots/concept-panel.png" alt="Detail panel for scaled dot-product attention, with diagram and prose"><br><em>Click a node for a diagram, the prose, and what it connects to</em></td>
+</tr>
+<tr>
+<td width="50%"><img src="docs/screenshots/search-filter.png" alt="Search filtering the graph down to reward-related concepts"><br><em>Search narrows 80 concepts to one thread</em></td>
+<td width="50%"><img src="docs/screenshots/list-view.png" alt="List view showing tier 3 and tier 4 concept cards"><br><em>List view — the same concepts as a linear reading path</em></td>
+</tr>
+</table>
 
-Each concept gets a one-line summary, a few paragraphs on why it earns its place, and links to its prerequisites, siblings, and the failure modes it explains. Nine of them have hand-drawn diagrams.
+## Why you'll like it
+
+- **It tells you what to learn first.** Every concept links to the ones underneath it, so you can drop into any node and walk backwards until you hit something you already know.
+- **It's honest about what's unsettled.** Entries carry their real 2025 status — where SAEs underperform, where a result is contested — not a tidy summary that pretends the field agreed.
+- **71 of the 80 concepts have a hand-drawn diagram**, because attention, KV caching, and MoE routing are geometry problems wearing a text disguise.
+- **Nothing to install.** One HTML file, no build step, no dependencies, no server, no network calls.
 
 ## Quick start
 
@@ -27,19 +45,18 @@ Or just open [`index.html`](index.html) in any modern browser.
 
 ## Using it
 
-The map opens in graph view. Nodes are concepts, edges are conceptual dependencies, and colour clusters are categories.
-
 | Action | Result |
 | --- | --- |
 | Drag | Pan the canvas |
-| Scroll | Zoom |
+| Scroll | Zoom — past a point, every node shows its label |
 | Click a node | Open its detail panel |
+| `Esc` | Close the panel |
 | `map` / `list` | Switch between the graph and a linear reading path |
-| Search | Filter concepts by name |
+| Search | Filter the graph to matching concepts |
 
-**List view** is the same 80 concepts flattened into tier order — the recommended reading path if you're starting from scratch. Start at the top even if the later tiers are what you came for; a good half of the alignment material stops making sense without the training and interpretability tiers under it.
+Filled nodes are core concepts. Ringed nodes are supporting ones — a prerequisite, a sibling worth knowing, or an outright gap.
 
-Filled nodes are the original core list; ringed nodes were added afterwards to fill in a missing prerequisite, a sibling worth knowing, or an outright gap.
+**List view** is the same 80 concepts flattened into tier order — the recommended path if you're starting from scratch. Start at the top even if the later tiers are what you came for; a good half of the alignment material stops making sense without the training and interpretability tiers under it.
 
 ## What's covered
 
@@ -57,9 +74,10 @@ Eleven tiers, roughly in dependency order:
 10. **Adversarial & security** — the failure modes with an attacker attached
 11. **Agent patterns** — what happens when the loop closes and the model can act
 
-Cross-cutting categories: architecture, training dynamics, post-training, inference & serving, interpretability, alignment theory, evaluation, adversarial, agent patterns.
+<details>
+<summary><strong>How it works, and how to add a concept</strong></summary>
 
-## How it works
+<br>
 
 Everything lives in [`index.html`](index.html) — content, force-directed layout, canvas renderer, and styles.
 
@@ -67,9 +85,7 @@ Everything lives in [`index.html`](index.html) — content, force-directed layou
 - **Layout** — a small force simulation seeds nodes near their category anchor, then relaxes edge springs and node repulsion into a stable arrangement.
 - **Rendering** — plain Canvas 2D with manual pan/zoom transforms. No graph library.
 
-### Adding a concept
-
-Append an object to the `C` array:
+To add a concept, append an object to the `C` array:
 
 ```js
 { id:'speculative', name:'Speculative decoding', cat:'infer', tier:6, yours:false,
@@ -79,6 +95,8 @@ Append an object to the `C` array:
 ```
 
 Links are bidirectional — listing `kvcache` here draws the edge from both sides. The node count in the header updates itself.
+
+</details>
 
 ## Accessibility
 
